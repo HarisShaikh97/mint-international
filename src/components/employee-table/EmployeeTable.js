@@ -13,7 +13,6 @@ import {
 	EyeIcon
 } from "@heroicons/react/24/solid"
 import { PlusCircleIcon } from "@heroicons/react/24/outline"
-import Image from "next/image"
 
 export default function EmployeeTable({ data }) {
 	const router = useRouter()
@@ -25,8 +24,8 @@ export default function EmployeeTable({ data }) {
 
 	const chunkArray = (array, chunkSize) => {
 		const result = []
-		for (let i = 0; i < array.length; i += chunkSize) {
-			result.push(array.slice(i, i + chunkSize))
+		for (let i = 0; i < array?.length; i += chunkSize) {
+			result?.push(array.slice(i, i + chunkSize))
 		}
 		return result
 	}
@@ -72,9 +71,7 @@ export default function EmployeeTable({ data }) {
 				<button
 					className="h-12 bg-primary rounded-lg flex flex-row items-center gap-2 px-3"
 					onClick={() => {
-						// router.push(
-						// 	"/dashboard/customer-management/add-employee"
-						// )
+						router.push("/admin/dashboard/employees/add")
 					}}
 				>
 					<PlusCircleIcon className="size-7 text-white" />
