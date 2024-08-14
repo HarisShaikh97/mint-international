@@ -56,13 +56,13 @@ export default function EmployeeTable({ data }) {
 			setPaginationStart(pageNumber - 2)
 			setPaginationEnd(pageNumber + 2)
 		}
-	}, [pageNumber, paginated_data?.length])
+	}, [pageNumber, paginated_data?.length, data])
 
 	return (
 		<div className="flex-1 w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
 			<div className="w-full flex flex-row items-center justify-between">
-				<div className="h-10 w-60 border rounded-lg flex flex-row items-center gap-2 px-2">
-					<MagnifyingGlassIcon className="h-6 w-6 text-black" />
+				<div className="h-10 w-60 border border-primary border-opacity-35 rounded-lg flex flex-row items-center gap-2 px-2">
+					<MagnifyingGlassIcon className="h-6 w-6 text-primary" />
 					<input
 						type="text"
 						placeholder="Search"
@@ -135,8 +135,8 @@ export default function EmployeeTable({ data }) {
 			<div className="w-full flex flex-row items-center justify-between">
 				<div className="flex flex-row items-center gap-5">
 					<p className="text-xs">Showing</p>
-					<div className="h-10 w-14 border rounded-lg flex flex-row items-center justify-between px-2">
-						<p className="text-xs">{itemsPerPage}</p>
+					<div className="h-10 w-14 border border-primary border-opacity-35 rounded-lg flex flex-row items-center justify-between px-2">
+						<p className="text-xs text-primary">{itemsPerPage}</p>
 						<div className="flex flex-col items-center justify-center gap-1">
 							<button
 								onClick={() => {
@@ -146,10 +146,10 @@ export default function EmployeeTable({ data }) {
 								}}
 							>
 								<ChevronUpIcon
-									className={`size-3 transform-gpu ease-in-out duration-500 ${
+									className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
 										itemsPerPage < 10
-											? "text-black"
-											: "text-gray-300"
+											? "opacity-100"
+											: "opacity-35"
 									}`}
 								/>
 							</button>
@@ -161,10 +161,10 @@ export default function EmployeeTable({ data }) {
 								}}
 							>
 								<ChevronDownIcon
-									className={`size-3 transform-gpu ease-in-out duration-500 ${
+									className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
 										itemsPerPage > 5
-											? "text-black"
-											: "text-gray-300"
+											? "opacity-100"
+											: "opacity-35"
 									}`}
 								/>
 							</button>
@@ -192,8 +192,8 @@ export default function EmployeeTable({ data }) {
 						}}
 					>
 						<ChevronLeftIcon
-							className={`size-4 transform-gpu ease-in-out duration-500 ${
-								pageNumber > 0 ? "text-black" : "text-gray-300"
+							className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
+								pageNumber > 0 ? "opacity-100" : "opacity-35"
 							}`}
 						/>
 					</button>
@@ -229,10 +229,10 @@ export default function EmployeeTable({ data }) {
 						}}
 					>
 						<ChevronRightIcon
-							className={`size-4 transform-gpu ease-in-out duration-500 ${
+							className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
 								pageNumber < paginated_data?.length - 1
-									? "text-black"
-									: "text-gray-300"
+									? "opacity-100"
+									: "opacity-35"
 							}`}
 						/>
 					</button>
