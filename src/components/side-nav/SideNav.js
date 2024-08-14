@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
 	HomeIcon,
 	UsersIcon,
@@ -12,7 +12,7 @@ import {
 export default function SideNav() {
 	const pathname = usePathname()
 
-	console.log(pathname)
+	const router = useRouter()
 
 	return (
 		<div className="h-full w-52 bg-primary bg-opacity-25 shadow-xl flex flex-col gap-20 items-center px-3 py-10">
@@ -23,28 +23,38 @@ export default function SideNav() {
 				width={125}
 			/>
 			<div className="flex flex-col gap-3 w-full">
-				<div
-					className={`h-10 w-full flex flex-row items-center gap-3 px-2 ${
+				<button
+					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname === "/admin/dashboard" &&
 						"bg-white rounded-md shadow-lg"
 					}`}
+					onClick={() => {
+						if (pathname !== "/admin/dashboard") {
+							router?.push("/admin/dashboard")
+						}
+					}}
 				>
 					<HomeIcon className="size-6 text-primary" />
 					<p className="text-lg text-primary font-semibold">Home</p>
-				</div>
-				<div
-					className={`h-10 w-full flex flex-row items-center gap-3 px-2 ${
-						pathname === "/admin/employees" &&
+				</button>
+				<button
+					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
+						pathname === "/admin/dashboard/employees" &&
 						"bg-white rounded-md shadow-lg"
 					}`}
+					onClick={() => {
+						if (pathname !== "/admin/dashboard/employees") {
+							router?.push("/admin/dashboard/employees")
+						}
+					}}
 				>
 					<UsersIcon className="size-6 text-primary" />
 					<p className="text-lg text-primary font-semibold">
 						Employees
 					</p>
-				</div>
-				<div
-					className={`h-10 w-full flex flex-row items-center gap-3 px-2 ${
+				</button>
+				<button
+					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname === "/admin/companies" &&
 						"bg-white rounded-md shadow-lg"
 					}`}
@@ -53,9 +63,9 @@ export default function SideNav() {
 					<p className="text-lg text-primary font-semibold">
 						Companies
 					</p>
-				</div>
-				<div
-					className={`h-10 w-full flex flex-row items-center gap-3 px-2 ${
+				</button>
+				<button
+					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname === "/admin/candidates" &&
 						"bg-white rounded-md shadow-lg"
 					}`}
@@ -64,7 +74,7 @@ export default function SideNav() {
 					<p className="text-lg text-primary font-semibold">
 						Candidates
 					</p>
-				</div>
+				</button>
 			</div>
 		</div>
 	)
