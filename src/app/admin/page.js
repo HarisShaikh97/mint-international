@@ -23,6 +23,7 @@ export default function Login() {
 			.post(`${API_BASE_URL}/admin/login`, payload)
 			?.then((res) => {
 				console.log(res)
+				localStorage.setItem("accessToken", res?.data?.accessToken)
 				toast.success("Login successful!")
 				setIsLoading(false)
 				router?.push("/admin/dashboard")
