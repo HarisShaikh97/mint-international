@@ -16,21 +16,21 @@ export default function AddEmployee() {
 						<p className="font-semibold">First Name</p>
 						<input
 							type="text"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 					<div className="w-full flex flex-col gap-2">
 						<p className="font-semibold">Last Name</p>
 						<input
 							type="text"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 					<div className="w-full flex flex-col gap-2">
 						<p className="font-semibold">Email</p>
 						<input
 							type="email"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 				</div>
@@ -39,21 +39,21 @@ export default function AddEmployee() {
 						<p className="font-semibold">Phone</p>
 						<input
 							type="text"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 					<div className="w-full flex flex-col gap-2">
 						<p className="font-semibold">Designation</p>
 						<input
 							type="text"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 					<div className="w-full flex flex-col gap-2">
 						<p className="font-semibold">Password</p>
 						<input
 							type="password"
-							className="h-10 w-full border border-gray-300 rounded-md"
+							className="h-10 w-full border border-gray-300 rounded-md px-2"
 						/>
 					</div>
 				</div>

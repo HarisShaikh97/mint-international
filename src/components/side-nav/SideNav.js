@@ -55,6 +55,22 @@ export default function SideNav() {
 				</button>
 				<button
 					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
+						pathname?.includes("/admin/dashboard/candidates") &&
+						"bg-white rounded-md shadow-lg"
+					}`}
+					onClick={() => {
+						if (pathname !== "/admin/dashboard/candidates") {
+							router?.push("/admin/dashboard/candidates")
+						}
+					}}
+				>
+					<UserGroupIcon className="size-6 text-primary" />
+					<p className="text-lg text-primary font-semibold">
+						Candidates
+					</p>
+				</button>
+				<button
+					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname === "/admin/companies" &&
 						"bg-white rounded-md shadow-lg"
 					}`}
@@ -62,17 +78,6 @@ export default function SideNav() {
 					<BuildingOffice2Icon className="size-6 text-primary" />
 					<p className="text-lg text-primary font-semibold">
 						Companies
-					</p>
-				</button>
-				<button
-					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
-						pathname === "/admin/candidates" &&
-						"bg-white rounded-md shadow-lg"
-					}`}
-				>
-					<UserGroupIcon className="size-6 text-primary" />
-					<p className="text-lg text-primary font-semibold">
-						Candidates
 					</p>
 				</button>
 			</div>
