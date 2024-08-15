@@ -15,7 +15,7 @@ export default function SideNav() {
 	const router = useRouter()
 
 	return (
-		<div className="h-full w-60 bg-primary bg-opacity-25 shadow-xl flex flex-col gap-20 items-center px-3 py-10">
+		<div className="h-full w-60 shadow-xl flex flex-col gap-20 items-center px-3 py-10">
 			<Image
 				src={"/images/mint-international-logo.png"}
 				alt="logo"
@@ -26,7 +26,7 @@ export default function SideNav() {
 				<button
 					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname === "/admin/dashboard" &&
-						"bg-white rounded-md shadow-lg"
+						"bg-primary rounded-md shadow-lg"
 					}`}
 					onClick={() => {
 						if (pathname !== "/admin/dashboard") {
@@ -34,13 +34,27 @@ export default function SideNav() {
 						}
 					}}
 				>
-					<HomeIcon className="size-6 text-primary" />
-					<p className="text-lg text-primary font-semibold">Home</p>
+					<HomeIcon
+						className={`size-6  ${
+							pathname === "/admin/dashboard"
+								? "text-white"
+								: "text-primary"
+						}`}
+					/>
+					<p
+						className={`text-lg ${
+							pathname === "/admin/dashboard"
+								? "text-white"
+								: "text-primary"
+						}`}
+					>
+						Home
+					</p>
 				</button>
 				<button
 					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname?.includes("/admin/dashboard/employees") &&
-						"bg-white rounded-md shadow-lg"
+						"bg-primary rounded-md shadow-lg"
 					}`}
 					onClick={() => {
 						if (pathname !== "/admin/dashboard/employees") {
@@ -48,15 +62,27 @@ export default function SideNav() {
 						}
 					}}
 				>
-					<UsersIcon className="size-6 text-primary" />
-					<p className="text-lg text-primary font-semibold">
+					<UsersIcon
+						className={`size-6 ${
+							pathname?.includes("/admin/dashboard/employees")
+								? "text-white"
+								: "text-primary"
+						}`}
+					/>
+					<p
+						className={`text-lg ${
+							pathname?.includes("/admin/dashboard/employees")
+								? "text-white"
+								: "text-primary"
+						}`}
+					>
 						Employees
 					</p>
 				</button>
 				<button
 					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
 						pathname?.includes("/admin/dashboard/candidates") &&
-						"bg-white rounded-md shadow-lg"
+						"bg-primary rounded-md shadow-lg"
 					}`}
 					onClick={() => {
 						if (pathname !== "/admin/dashboard/candidates") {
@@ -64,19 +90,43 @@ export default function SideNav() {
 						}
 					}}
 				>
-					<UserGroupIcon className="size-6 text-primary" />
-					<p className="text-lg text-primary font-semibold">
+					<UserGroupIcon
+						className={`size-6 ${
+							pathname?.includes("/admin/dashboard/candidates")
+								? "text-white"
+								: "text-primary"
+						}`}
+					/>
+					<p
+						className={`text-lg ${
+							pathname?.includes("/admin/dashboard/candidates")
+								? "text-white"
+								: "text-primary"
+						}`}
+					>
 						Candidates
 					</p>
 				</button>
 				<button
 					className={`h-10 w-full flex flex-row items-center gap-3 px-2 transform-gpu ease-in-out duration-500 ${
-						pathname === "/admin/companies" &&
-						"bg-white rounded-md shadow-lg"
+						pathname === "/admin/dashboard/companies" &&
+						"bg-primary rounded-md shadow-lg"
 					}`}
 				>
-					<BuildingOffice2Icon className="size-6 text-primary" />
-					<p className="text-lg text-primary font-semibold">
+					<BuildingOffice2Icon
+						className={`size-6 text-primary ${
+							pathname === "/admin/dashboard/companies"
+								? "text-white"
+								: "text-primary"
+						}`}
+					/>
+					<p
+						className={`text-lg ${
+							pathname === "/admin/dashboard/companies"
+								? "text-white"
+								: "text-primary"
+						}`}
+					>
 						Companies
 					</p>
 				</button>
