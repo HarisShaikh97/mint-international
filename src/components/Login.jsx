@@ -8,31 +8,21 @@ import toast from "react-hot-toast";
 import { FallingLines } from "react-loader-spinner";
 
 export default function Login() {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  console.log(API_BASE_URL);
-
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
-    const payload = { email, password };
-    await axios
-      .post(`${API_BASE_URL}/admin/login`, payload)
-      ?.then((res) => {
-        console.log(res);
-        localStorage.setItem("accessToken", res?.data?.accessToken);
-        toast.success("Login successful!");
+    axios
+      .post("", { email, password })
+      .then((response) => {
+        console.log(response);
+        toast.success("Login Successfull");
         setIsLoading(false);
-        router?.push("/admin/dashboard");
       })
-      ?.catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.message || "Invalid Credentials!");
-        setIsLoading(false);
+      .catch((error) => {
+        toast.error(error || "An Error Occurred");
       });
   };
 
@@ -48,7 +38,7 @@ export default function Login() {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-10">
         <p className="text-3xl font-semibold text-primary">Login</p>
-        <div className="w-[500px] rounded-lg shadow-2xl border border-primary flex flex-col gap-10 p-7">
+        <div className="w-[500px] rounded-lg shadow-2xl border border-primary flex flex-col gap-20 p-7">
           <div className="flex flex-col gap-3">
             <p className="text-lg font-semibold text-primary">Email:</p>
             <input
