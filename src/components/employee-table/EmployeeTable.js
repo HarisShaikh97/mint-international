@@ -155,10 +155,9 @@ export default function EmployeeTable({ data }) {
                   <button
                     onClick={() => {
                       if (editId === key) {
-                        // Save functionality here
-                        setEditId(null); // Exit edit mode after saving
+                        setEditId(null);
                       } else {
-                        setEditId(key); // Enter edit mode for specific row
+                        setEditId(key);
                       }
                     }}
                   >

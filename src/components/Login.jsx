@@ -11,14 +11,17 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .post("", { email, password })
+      .post(`${API_URL}/admin/login`, { email, password })
       .then((response) => {
         console.log(response);
-        toast.success("Login Successfull");
+        toast.success("Login SuccessFull");
         setIsLoading(false);
       })
       .catch((error) => {
