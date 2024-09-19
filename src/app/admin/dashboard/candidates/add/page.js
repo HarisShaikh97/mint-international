@@ -81,6 +81,8 @@ export default function AddCandidate() {
       data.append(`experienceDetails[${index}][duration]`, item.duration);
       data.append(`experienceDetails[${index}][trade]`, item.trade);
     });
+
+    console.log(formData);
   };
 
   return (
@@ -354,11 +356,19 @@ export default function AddCandidate() {
         })}
         <div className="w-full flex flex-col gap-2">
           <p className="font-semibold">Remarks</p>
-          <textarea className="h-40 w-full border border-gray-300 rounded-md p-2" />
+          <textarea
+            className="h-40 w-full border border-gray-300 rounded-md p-2"
+            name="remarks"
+            value={formData.remarks}
+            onChange={handleInputChange}
+          />
         </div>
       </div>
       <div className="flex flex-row items-center gap-5 self-end">
-        <button className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-primary text-white">
+        <button
+          type="submit"
+          className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-primary text-white"
+        >
           Save
         </button>
         <button

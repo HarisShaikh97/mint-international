@@ -13,15 +13,18 @@ import {
   EyeIcon,
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function CandidateTable({ data }) {
   const router = useRouter();
   const Data = data?.data;
-
+  const [editId, setEditId] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [paginationStart, setPaginationStart] = useState(0);
   const [paginationEnd, setPaginationEnd] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
@@ -55,6 +58,21 @@ export default function CandidateTable({ data }) {
     }
   }, [pageNumber, paginated_data?.length, data]);
   console.log(paginated_data);
+
+  const handleDelete = async (id) => {
+    if (id) {
+      axios
+        .delete(`${API_URL}/applicant/delete/${id}`)
+        .then((response) => {
+          toast.success(response.message || "User Deleted SuccessFully");
+        })
+        .catch((err) => {
+          toast.error(err.message || "An Error Occurred");
+        });
+    } else {
+      toast.error("Error Occurred Try Again");
+    }
+  };
 
   return (
     <div className="flex-1 w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
@@ -91,22 +109,87 @@ export default function CandidateTable({ data }) {
           {paginated_data[pageNumber]?.map((item, key) => {
             return (
               <div className="grid grid-cols-7 text-xs" key={key}>
-                <p className="truncate pr-5">{item?.fullName}</p>
-                <p className="truncate pr-5">{item?.fatherName}</p>
-                <p className="truncate pr-5">{item?.postAppliedFor}</p>
                 <p className="truncate pr-5">
-                  {item?.phone1 ||
-                    phone2?.map((item, key) => {
-                      return key > 0 ? `, ${item}` : item;
-                    })}
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.fullName
+                  )}
+                </p>{" "}
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.fatherName
+                  )}
                 </p>
-                <p className="truncate pr-5">{item?.dateOfBirth}</p>
-                <p className="pr-5">{item?.referredBy}</p>
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.postAppliedFor
+                  )}
+                </p>
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="number"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.phone1
+                  )}
+                </p>
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.dateOfBirth
+                  )}
+                </p>
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      className="border-[2px] border-primary"
+                    />
+                  ) : (
+                    item?.referredBy
+                  )}
+                </p>
                 <div className="w-full flex flex-row items-center justify-center gap-5">
-                  <button>
-                    <PencilSquareIcon className="size-5 text-primary" />
+                  <button
+                    onClick={() => {
+                      if (editId === key) {
+                        setEditId(null);
+                      } else {
+                        setEditId(key);
+                      }
+                    }}
+                  >
+                    {editId === key ? (
+                      "Save"
+                    ) : (
+                      <PencilSquareIcon className="size-5 text-primary" />
+                    )}
                   </button>
-                  <button>
+                  <button
+                    onClick={() => {
+                      handleDelete(item._id);
+                    }}
+                  >
                     <EyeIcon className="size-5 text-primary" />
                   </button>
                 </div>

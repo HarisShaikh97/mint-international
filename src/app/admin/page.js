@@ -47,7 +47,7 @@ export default function Login() {
         />
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-10">
-        <p className="text-3xl font-semibold text-primary">Login</p>
+        <p className="text-3xl  text-primary font-extrabold">Login</p>
         <div className="w-[500px] rounded-lg shadow-2xl border border-primary flex flex-col gap-10 p-7">
           <div className="flex flex-col gap-3">
             <p className="text-lg font-semibold text-primary">Email:</p>

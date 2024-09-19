@@ -2148,10 +2148,11 @@ export default function Candidates() {
     },
   ];
 
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   useEffect(() => {
     const FetchData = () => {
       axios
-        .get("https://5rrdzg3k-8000.inc1.devtunnels.ms/applicant/get")
+        .get(`${API_URL}/applicant/get`)
         .then((response) => {
           console.log(response);
           setCandidate(response?.data);
