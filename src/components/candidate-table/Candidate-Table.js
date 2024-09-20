@@ -25,6 +25,14 @@ export default function CandidateTable({ data }) {
   const [paginationEnd, setPaginationEnd] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [items, setItems] = useState({
+    fullName: "",
+    fatherName: "",
+    postAppliedFor: "",
+    phone1: "",
+    dateOfBirth: "",
+    referredBy: "",
+  });
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
@@ -64,13 +72,45 @@ export default function CandidateTable({ data }) {
       axios
         .delete(`${API_URL}/applicant/delete/${id}`)
         .then((response) => {
-          toast.success(response.message || "User Deleted SuccessFully");
+          toast.success(response.data.message || "User Deleted SuccessFully");
         })
         .catch((err) => {
           toast.error(err.message || "An Error Occurred");
         });
     } else {
       toast.error("Error Occurred Try Again");
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setItems({
+      ...items,
+      [name]: value,
+    });
+  };
+  const handleEdit = async (id) => {
+    if (id) {
+      axios
+        .put(` ${API_URL}/applicant/update/${id}`, items)
+        .then((response) => {
+          toast.success(
+            response.data.message || "Candidate Updated SuccessFully"
+          );
+          setItems({
+            fullName: "",
+            fatherName: "",
+            postAppliedFor: "",
+            phone1: "",
+            dateOfBirth: "",
+            referredBy: "",
+          });
+
+          window.location.reload(false);
+        })
+        .catch((err) => {
+          toast.error(err.message || "An Error Occurred ");
+        });
     }
   };
 
@@ -113,6 +153,9 @@ export default function CandidateTable({ data }) {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.fullName}
+                      name="fullName"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -123,6 +166,9 @@ export default function CandidateTable({ data }) {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.fatherName}
+                      name="fatherName"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -133,6 +179,9 @@ export default function CandidateTable({ data }) {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.postAppliedFor}
+                      name="postAppliedFor"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -143,6 +192,9 @@ export default function CandidateTable({ data }) {
                   {editId == key ? (
                     <input
                       type="number"
+                      value={items.phone1}
+                      name="phone1"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -152,7 +204,10 @@ export default function CandidateTable({ data }) {
                 <p className="truncate pr-5">
                   {editId == key ? (
                     <input
-                      type="text"
+                      type="date"
+                      value={items.dateOfBirth}
+                      onChange={handleInputChange}
+                      name="dateOfBirth"
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -163,6 +218,9 @@ export default function CandidateTable({ data }) {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.referredBy}
+                      name="referredBy"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -180,7 +238,14 @@ export default function CandidateTable({ data }) {
                     }}
                   >
                     {editId === key ? (
-                      "Save"
+                      <button
+                        className="text-primary font-bold"
+                        onClick={() => {
+                          handleEdit(item._id);
+                        }}
+                      >
+                        Save
+                      </button>
                     ) : (
                       <PencilSquareIcon className="size-5 text-primary" />
                     )}

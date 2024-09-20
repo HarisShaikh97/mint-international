@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function AddCandidate() {
   const router = useRouter();
-  const [experienceDetails, setExperienceDetails] = useState([
-    { companyName: "", duration: "", trade: "" },
-  ]);
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [formData, setFormData] = useState({
     postAppliedFor: "",
     referredBy: "",
@@ -23,29 +24,53 @@ export default function AddCandidate() {
     passportNo: "",
     academicQualifications: "",
     technicalQualifications: "",
-    languagesKnown: "",
+    languagesKnown: [""],
     phone1: "",
     phone2: "",
     experienceTotal: "",
-    experienceDetails: experienceDetails,
+    experienceDetails: [{ companyName: "", duration: "", trade: "" }],
     remarks: "",
     cnic: "",
     profileImage: "",
   });
 
   const handleAddRow = () => {
-    setExperienceDetails([
-      ...experienceDetails,
-      { companyName: "", duration: "", trade: "" },
-    ]);
+    setFormData({
+      ...formData,
+      experienceDetails: [
+        ...formData.experienceDetails,
+        { companyName: "", duration: "", trade: "" },
+      ],
+    });
   };
 
   const handleRemoveRow = (index) => {
     if (index !== 0) {
-      const newExperiences = [...experienceDetails];
-      newExperiences?.splice(index, 1);
-      setExperienceDetails(newExperiences);
+      const newExperienceDetails = [...formData.experienceDetails];
+      newExperienceDetails.splice(index, 1);
+      setFormData({ ...formData, experienceDetails: newExperienceDetails });
     }
+  };
+
+  const handleAddLanguage = () => {
+    setFormData({
+      ...formData,
+      languagesKnown: [...formData.languagesKnown, ""], // Add a new empty string to the array
+    });
+  };
+
+  const handleRemoveLanguage = (index) => {
+    const newLanguages = [...formData.languagesKnown];
+    if (index !== 0) {
+      newLanguages.splice(index, 1); // Remove the language at the given index
+      setFormData({ ...formData, languagesKnown: newLanguages });
+    }
+  };
+
+  const handleLanguageChange = (index, value) => {
+    const newLanguages = [...formData.languagesKnown];
+    newLanguages[index] = value; // Update the language at the given index
+    setFormData({ ...formData, languagesKnown: newLanguages });
   };
 
   const handleInputChange = (e) => {
@@ -58,31 +83,48 @@ export default function AddCandidate() {
     setFormData({ ...formData, profileImage: e.target.files[0] });
   };
 
+  const handleExperienceChange = (index, field, value) => {
+    const newExperienceDetails = [...formData.experienceDetails];
+    newExperienceDetails[index][field] = value;
+    setFormData({ ...formData, experienceDetails: newExperienceDetails });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
 
-    // Append all text fields
     Object.entries(formData).forEach(([key, value]) => {
       if (key !== "experienceDetails" && key !== "profileImage") {
         data.append(key, value);
       }
     });
 
-    // Append profile image (if any)
     if (formData.profileImage) {
       data.append("profileImage", formData.profileImage);
     }
 
-    // Append experience details
-    experienceDetails.forEach((item, index) => {
+    formData.experienceDetails.forEach((item, index) => {
       data.append(`experienceDetails[${index}][companyName]`, item.companyName);
       data.append(`experienceDetails[${index}][duration]`, item.duration);
       data.append(`experienceDetails[${index}][trade]`, item.trade);
     });
 
-    console.log(formData);
+    if (data) {
+      if (!formData.profileImage) {
+        toast.error("Profile Image Required");
+      } else {
+        axios
+          .post(`${API_URL}/applicant/add`, data)
+          .then((response) => {
+            toast.success(response.message || "Candidate Added");
+            router.push("/admin/dashboard/candidates");
+          })
+          .catch((err) => {
+            toast.error(err.message || "An Error Occurred ");
+          });
+      }
+    }
   };
 
   return (
@@ -197,7 +239,7 @@ export default function AddCandidate() {
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
-          <div className="w-full flex flex-col gap-2">
+          {/* <div className="w-full flex flex-col gap-2">
             <p className="font-semibold">Languages Known</p>
             <input
               type="text"
@@ -206,6 +248,35 @@ export default function AddCandidate() {
               name="languagesKnown"
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
+          </div> */}
+          <div className="w-full flex flex-col gap-2">
+            <p className="font-semibold">Languages Known</p>
+            {formData.languagesKnown.map((language, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={language}
+                  onChange={(e) => handleLanguageChange(index, e.target.value)}
+                  className="h-10 w-full border border-gray-300 rounded-md px-2"
+                />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveLanguage(index)}
+                    className="text-red-500"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddLanguage}
+              className="h-10 w-40 bg-primary text-white rounded-lg font-semibold mt-2"
+            >
+              Add Language
+            </button>
           </div>
         </div>
         <div className="w-full flex flex-row gap-5 items-center">
@@ -263,7 +334,7 @@ export default function AddCandidate() {
           <div className="w-full flex flex-col gap-2">
             <p className="font-semibold">Total Experience (Years)</p>
             <input
-              type="text"
+              type="number"
               onChange={handleInputChange}
               value={formData.experienceTotal}
               name="experienceTotal"
@@ -293,6 +364,7 @@ export default function AddCandidate() {
         <div className="w-full flex flex-row items-center justify-between my-5">
           <p className="font-semibold text-lg">Experience Details</p>
           <button
+            type="button"
             className="h-10 w-40 items-center justify-center bg-primary rounded-lg text-lg text-white font-semibold"
             onClick={handleAddRow}
           >
@@ -300,60 +372,53 @@ export default function AddCandidate() {
           </button>
         </div>
 
-        {experienceDetails?.map((item, key) => {
-          return (
-            <div className="w-full flex flex-row gap-5 items-center" key={key}>
-              <div className="w-full flex flex-col gap-2">
-                <p className="font-semibold">Company</p>
-                <input
-                  type="text"
-                  name="experienceDetails"
-                  className="h-10 w-full border border-gray-300 rounded-md px-2"
-                  value={item?.companyName}
-                  onChange={(e) => {
-                    const newExperienceDetails = [...experienceDetails];
-                    newExperienceDetails[key].companyName = e.target.value;
-                    setExperienceDetails(newExperienceDetails);
-                  }}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <p className="font-semibold">Period From - Upto</p>
-                <input
-                  type="text"
-                  className="h-10 w-full border border-gray-300 rounded-md px-2"
-                  value={item?.duration}
-                  onChange={(e) => {
-                    const newExperienceDetails = [...experienceDetails];
-                    newExperienceDetails[key].duration = e.target.value;
-                    setExperienceDetails(newExperienceDetails);
-                  }}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-2">
-                <p className="font-semibold">Trade</p>
-                <input
-                  type="text"
-                  className="h-10 w-full border border-gray-300 rounded-md px-2"
-                  value={item?.trade}
-                  onChange={(e) => {
-                    const newExperienceDetails = [...experienceDetails];
-                    newExperienceDetails[key].trade = e.target.value;
-                    setExperienceDetails(newExperienceDetails);
-                  }}
-                />
-              </div>
-              <button
-                className="self-start min-w-10"
-                onClick={() => {
-                  handleRemoveRow(key);
-                }}
-              >
-                {key > 0 && <XMarkIcon className="size-7 text-primary" />}
-              </button>
+        {formData.experienceDetails.map((item, key) => (
+          <div className="w-full flex flex-row gap-5 items-center" key={key}>
+            <div className="w-full flex flex-col gap-2">
+              <p className="font-semibold">Company</p>
+              <input
+                type="text"
+                value={item.companyName}
+                onChange={(e) =>
+                  handleExperienceChange(key, "companyName", e.target.value)
+                }
+                className="h-10 w-full border border-gray-300 rounded-md px-2"
+              />
             </div>
-          );
-        })}
+            <div className="w-full flex flex-col gap-2">
+              <p className="font-semibold">Period From - Upto</p>
+              <input
+                type="text"
+                value={item.duration}
+                onChange={(e) =>
+                  handleExperienceChange(key, "duration", e.target.value)
+                }
+                className="h-10 w-full border border-gray-300 rounded-md px-2"
+              />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <p className="font-semibold">Trade</p>
+              <input
+                type="text"
+                value={item.trade}
+                onChange={(e) =>
+                  handleExperienceChange(key, "trade", e.target.value)
+                }
+                className="h-10 w-full border border-gray-300 rounded-md px-2"
+              />
+            </div>
+            {key > 0 && (
+              <button
+                type="button"
+                onClick={() => handleRemoveRow(key)}
+                className="text-red-500"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            )}
+          </div>
+        ))}
+
         <div className="w-full flex flex-col gap-2">
           <p className="font-semibold">Remarks</p>
           <textarea
