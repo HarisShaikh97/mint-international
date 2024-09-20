@@ -34,7 +34,11 @@ export default function Form() {
           ref={formRef}
           className="w-[50%] h-full mb-10 pb-4 bg-white shadow-xl rounded-lg"
         >
-          <Image src={"/images/logo.PNG"} width={1000} height={200} />
+          <div className="w-full h-full flex justify-center items-center gap-2">
+            <Image src={"/images/m1.PNG"} width={300} height={200} />
+            <Image src={"/images/m2.PNG"} width={200} height={200} />
+            <Image src={"/images/m3.PNG"} width={300} height={200} />
+          </div>
           <h1 className="font-bold text-center mt-4">FORM-A</h1>
           <div className="w-full h-[150px] flex justify-around items-center ">
             <div className="flex flex-col gap-2">
