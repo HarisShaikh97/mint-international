@@ -11,19 +11,21 @@ import {
   ChevronRightIcon,
   PencilSquareIcon,
   EyeIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export default function CandidateTable({ data }) {
+export default function CandidateTable() {
   const router = useRouter();
-  const Data = data?.data;
+  const [Data, setData] = useState();
   const [editId, setEditId] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [paginationStart, setPaginationStart] = useState(0);
   const [paginationEnd, setPaginationEnd] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [items, setItems] = useState({
     fullName: "",
@@ -34,6 +36,22 @@ export default function CandidateTable({ data }) {
     referredBy: "",
   });
 
+  useEffect(() => {
+    const FetchData = () => {
+      axios
+        .get(`${API_URL}/applicant/get`)
+        .then((response) => {
+          console.log(response);
+          setData(response?.data?.data);
+        })
+        .catch((error) => {
+          toast.error(error?.message || "An Error Occurred");
+        });
+    };
+    FetchData();
+  }, []);
+  console.log(Data);
+
   const chunkArray = (array, chunkSize) => {
     const result = [];
     for (let i = 0; i < array?.length; i += chunkSize) {
@@ -42,7 +60,11 @@ export default function CandidateTable({ data }) {
     return result;
   };
 
-  const paginated_data = chunkArray(Data, itemsPerPage);
+  const search_data = Data?.filter((item) =>
+    item?.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const paginated_data = chunkArray(search_data, itemsPerPage);
 
   useEffect(() => {
     if (pageNumber >= paginated_data?.length && paginated_data?.length > 0) {
@@ -64,21 +86,27 @@ export default function CandidateTable({ data }) {
       setPaginationStart(pageNumber - 2);
       setPaginationEnd(pageNumber + 2);
     }
-  }, [pageNumber, paginated_data?.length, data]);
+  }, [pageNumber, paginated_data?.length, search_data]);
   console.log(paginated_data);
 
   const handleDelete = async (id) => {
     if (id) {
-      axios
-        .delete(`${API_URL}/applicant/delete/${id}`)
-        .then((response) => {
-          toast.success(response.data.message || "User Deleted SuccessFully");
-        })
-        .catch((err) => {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this user?"
+      );
+      if (confirmDelete) {
+        try {
+          const response = await axios.delete(
+            `${API_URL}/applicant/delete/${id}`
+          );
+          toast.success(response.data.message || "User Deleted Successfully");
+          window.location.reload(false);
+        } catch (err) {
           toast.error(err.message || "An Error Occurred");
-        });
+        }
+      }
     } else {
-      toast.error("Error Occurred Try Again");
+      toast.error("Error Occurred. Try Again");
     }
   };
 
@@ -115,13 +143,18 @@ export default function CandidateTable({ data }) {
   };
 
   return (
-    <div className="flex-1 w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
+    <div className="flex-1 w-full gap-32  border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
       <div className="w-full flex flex-row items-center justify-between">
         <div className="h-10 w-60 border border-primary border-opacity-35 rounded-lg flex flex-row items-center gap-2 px-2">
           <MagnifyingGlassIcon className="h-6 w-6 text-primary" />
           <input
             type="text"
             placeholder="Search"
+            name="searchQuery"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
             className="w-full outline-none"
           />
         </div>
@@ -255,7 +288,15 @@ export default function CandidateTable({ data }) {
                       handleDelete(item._id);
                     }}
                   >
-                    <EyeIcon className="size-5 text-primary" />
+                    <TrashIcon className="size-5 text-primary" />
+                  </button>
+                  <button>
+                    <EyeIcon
+                      className="size-5 text-primary"
+                      onClick={() => {
+                        router.push(`/admin/dashboard/candidates/${item._id}`);
+                      }}
+                    />
                   </button>
                 </div>
               </div>
@@ -305,7 +346,7 @@ export default function CandidateTable({ data }) {
             ? (pageNumber + 1) * itemsPerPage -
               (itemsPerPage - paginated_data[pageNumber]?.length)
             : 0}{" "}
-          out of {data?.length} records
+          out of {Data?.length} records
         </p>
         <div className="flex flex-row items-center gap-3">
           <button

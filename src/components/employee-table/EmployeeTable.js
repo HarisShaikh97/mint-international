@@ -11,10 +11,13 @@ import {
   ChevronRightIcon,
   PencilSquareIcon,
   EyeIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-export default function EmployeeTable({ data }) {
+export default function EmployeeTable() {
   const router = useRouter();
 
   const [pageNumber, setPageNumber] = useState(0);
@@ -23,6 +26,27 @@ export default function EmployeeTable({ data }) {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [Data, setData] = useState([]);
+  const [items, setItems] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone1: "",
+    role: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    axios
+      .get(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/get`)
+      .then((res) => {
+        setData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
@@ -32,7 +56,13 @@ export default function EmployeeTable({ data }) {
     return result;
   };
 
-  const paginated_data = chunkArray(data, itemsPerPage);
+  const search_data = Data?.filter((item) =>
+    (item?.firstName.toLowerCase() + item?.lastName.toLowerCase()).includes(
+      searchQuery.toLowerCase()
+    )
+  );
+
+  const paginated_data = chunkArray(search_data, itemsPerPage);
 
   useEffect(() => {
     if (pageNumber >= paginated_data?.length && paginated_data?.length > 0) {
@@ -54,15 +84,41 @@ export default function EmployeeTable({ data }) {
       setPaginationStart(pageNumber - 2);
       setPaginationEnd(pageNumber + 2);
     }
-  }, [pageNumber, paginated_data?.length, data]);
+  }, [pageNumber, paginated_data?.length, search_data]);
+
+  const handleDelete = async (id) => {
+    if (id) {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this user?"
+      );
+      if (confirmDelete) {
+        try {
+          const response = await axios.delete(
+            `https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/delete/${id}`
+          );
+          toast.success(response.data.message || "User Deleted Successfully");
+          window.location.reload(false);
+        } catch (err) {
+          toast.error(err.message || "An Error Occurred");
+        }
+      }
+    } else {
+      toast.error("Error Occurred. Try Again");
+    }
+  };
 
   return (
-    <div className="flex-1 w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
+    <div className="flex-1  w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
       <div className="w-full flex flex-row items-center justify-between">
         <div className="h-10 w-60 border border-primary border-opacity-35 rounded-lg flex flex-row items-center gap-2 px-2">
           <MagnifyingGlassIcon className="h-6 w-6 text-primary" />
           <input
             type="text"
+            name="searchQuery"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
             placeholder="Search"
             className="w-full outline-none"
           />
@@ -87,6 +143,7 @@ export default function EmployeeTable({ data }) {
           <p>Password</p>
           <p className="w-full text-center">Action</p>
         </div>
+
         <div className="flex-1 flex flex-col gap-7 overflow-y-auto scrollbar-none">
           {paginated_data[pageNumber]?.map((item, key) => {
             return (
@@ -138,7 +195,7 @@ export default function EmployeeTable({ data }) {
                       className="border-[2px] border-primary"
                     />
                   ) : (
-                    item?.designation
+                    item?.role
                   )}
                 </p>
                 <p className="truncate pr-5">
@@ -169,10 +226,18 @@ export default function EmployeeTable({ data }) {
                   </button>
                   <button
                     onClick={() => {
-                      // setCustomerToDelete(item?._id)
+                      handleDelete(item._id);
                     }}
                   >
-                    <EyeIcon className="size-5 text-primary" />
+                    <TrashIcon className="size-5 text-primary" />
+                  </button>
+                  <button>
+                    <EyeIcon
+                      className="size-5 text-primary"
+                      onClick={() => {
+                        router.push(`/admin/dashboard/employees/${item._id}`);
+                      }}
+                    />
                   </button>
                 </div>
               </div>
@@ -222,7 +287,7 @@ export default function EmployeeTable({ data }) {
             ? (pageNumber + 1) * itemsPerPage -
               (itemsPerPage - paginated_data[pageNumber]?.length)
             : 0}{" "}
-          out of {data?.length} records
+          out of {Data?.length} records
         </p>
         <div className="flex flex-row items-center gap-3">
           <button
