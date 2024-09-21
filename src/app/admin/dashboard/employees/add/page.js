@@ -1,12 +1,48 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AddEmployee() {
   const router = useRouter();
+  const [items, setItems] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "",
+    phone: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setItems({
+      ...items,
+      [name]: value,
+    });
+    console.log(name, value);
+  };
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!items) {
+      toast.error("All Fields Are Required");
+    }
+    axios
+      .post(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/create`, items)
+      .then((response) => {
+        toast.success(response?.data?.message || "Employee Created");
+        router.push("/admin/dashboard/employees");
+      })
+      .catch((err) => {
+        toast.error(err?.message || "An Error Occurred");
+      });
+  };
 
   return (
-    <main className="flex-1 flex flex-col gap-16 p-10">
+    <form onSubmit={handleAdd} className="flex-1 flex flex-col gap-16 p-10">
       <p className="text-3xl font-semibold text-primary">Add New Employee</p>
       <div className="flex flex-col w-full gap-5">
         <div className="w-full flex flex-row gap-5 items-center">
@@ -14,6 +50,9 @@ export default function AddEmployee() {
             <p className="font-semibold">First Name</p>
             <input
               type="text"
+              name="firstName"
+              onChange={handleInputChange}
+              value={items.firstName}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
@@ -21,6 +60,9 @@ export default function AddEmployee() {
             <p className="font-semibold">Last Name</p>
             <input
               type="text"
+              name="lastName"
+              value={items.lastName}
+              onChange={handleInputChange}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
@@ -28,6 +70,9 @@ export default function AddEmployee() {
             <p className="font-semibold">Email</p>
             <input
               type="email"
+              name="email"
+              value={items.email}
+              onChange={handleInputChange}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
@@ -37,6 +82,9 @@ export default function AddEmployee() {
             <p className="font-semibold">Phone</p>
             <input
               type="text"
+              name="phone"
+              value={items.phone}
+              onChange={handleInputChange}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
@@ -44,17 +92,24 @@ export default function AddEmployee() {
             <p className="font-semibold">Designation</p>
             <select
               type="text"
+              name="role"
+              onChange={handleInputChange}
+              value={items.role}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             >
-              <option value={"Receptionist"}>Receptionist</option>
-              <option value={"Process Manager"}>Process Manager</option>
-              <option value={"Accountant"}>Accountant</option>
+              <option value={""}>Select Designation</option>
+              <option value={"receptionist"}>Receptionist</option>
+              <option value={"processAgent"}>Process Agent</option>
+              <option value={"accountant"}>Accountant</option>
             </select>
           </div>
           <div className="w-full flex flex-col gap-2">
             <p className="font-semibold">Password</p>
             <input
               type="password"
+              name="password"
+              onChange={handleInputChange}
+              value={items.password}
               className="h-10 w-full border border-gray-300 rounded-md px-2"
             />
           </div>
@@ -73,6 +128,6 @@ export default function AddEmployee() {
           Cancel
         </button>
       </div>
-    </main>
+    </form>
   );
 }

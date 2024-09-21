@@ -11,6 +11,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -18,10 +19,22 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .post(`${API_URL}/admin/login`, { email, password })
+      .post(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/login`, {
+        email,
+        password,
+      })
       .then((response) => {
         console.log(response);
         toast.success("Login SuccessFull");
+        if (response?.data?.data?.role == "accountant") {
+          router.push("/dashboards/Accountant");
+        }
+        if (response?.data?.data?.role == "processAgent") {
+          router.push("/dashboards/Manager");
+        }
+        if (response?.data?.data?.role == "receptionist") {
+          router.push("/dashboards/Receptionist");
+        }
         setIsLoading(false);
       })
       .catch((error) => {
