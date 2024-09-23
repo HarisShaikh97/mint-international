@@ -15,6 +15,7 @@ export default function AddEmployee() {
     role: "",
     phone: "",
   });
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -31,7 +32,7 @@ export default function AddEmployee() {
       toast.error("All Fields Are Required");
     }
     axios
-      .post(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/create`, items)
+      .post(`${API_URL}/employee/create`, items)
       .then((response) => {
         toast.success(response?.data?.message || "Employee Created");
         router.push("/admin/dashboard/employees");

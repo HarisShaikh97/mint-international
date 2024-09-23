@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 export default function Form({ id }) {
   const formRef = useRef(null);
   const [data, setData] = useState("");
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const downloadPDF = () => {
     const input = formRef.current;
@@ -33,29 +34,47 @@ export default function Form({ id }) {
 
   useEffect(() => {
     axios
-      .get(`https://5rrdzg3k-8000.inc1.devtunnels.ms/applicant/get/${id}`)
+      .get(`${API_URL}/applicant/get/${id}`)
       .then((res) => {
         setData(res?.data?.data);
-        console.log(res);
       })
       .catch((err) => {
         toast.error(err?.message || "Candidate Data Not Found");
       });
   }, []);
+
   const profileImage = data?.profileImage;
   const modifiedImage = profileImage?.replace("public/", "");
-  console.log(modifiedImage);
+  const encodedUrl = modifiedImage?.replace(/ /g, "%20");
+  const image = `http://192.168.50.17:8000/${encodedUrl}`;
+  console.log(image);
+
   return (
     <>
-      <main className="min-h-screen w-full bg-white flex justify-center items-center">
+      <main className="min-h-screen w-full mt-4 bg-white flex justify-center items-center">
         <form
           ref={formRef}
-          className="w-[50%] h-full mb-10 pb-4 bg-white shadow-xl rounded-lg"
+          className="w-[870px]  h-full mb-10 pb-4 overflow-x-auto bg-white shadow-xl rounded-lg"
         >
           <div className="w-full h-full flex justify-center items-center gap-2">
-            <Image src={"/images/m1.PNG"} width={300} height={200} />
-            <Image src={"/images/m2.PNG"} width={200} height={200} />
-            <Image src={"/images/m3.PNG"} width={300} height={200} />
+            <Image
+              src={"/images/m1.PNG"}
+              alt="m1.png"
+              width={300}
+              height={200}
+            />
+            <Image
+              src={"/images/m2.PNG"}
+              alt="m1.png"
+              width={200}
+              height={200}
+            />
+            <Image
+              src={"/images/m3.PNG"}
+              alt="m1.png"
+              width={300}
+              height={200}
+            />
           </div>
           <h1 className="font-bold text-center mt-4">FORM-A</h1>
           <div className="w-full h-[150px] flex justify-around items-center ">
@@ -88,7 +107,7 @@ export default function Form({ id }) {
             <div
               className="relative w-[200px] h-[200px] border-[1px] border-black bg-cover bg-center"
               style={{
-                backgroundImage: `url(https://5rrdzg3k-8000.inc1.devtunnels.ms/${modifiedImage})`,
+                backgroundImage: `url(${image})`,
               }}
             />
           </div>
@@ -160,8 +179,8 @@ export default function Form({ id }) {
           <div className="flex items-center  mt-2">
             <p className="w-[200px] font-bold ml-2">Languages Known:</p>
             <div className="w-[470px] h-[30px] border-blue-300 border-b-2">
-              {data?.languagesKnown?.map((item) => (
-                <p>{item}</p>
+              {data?.languagesKnown?.map((item, index) => (
+                <p key={index}>{item}</p>
               ))}
             </div>
           </div>
@@ -194,7 +213,9 @@ export default function Form({ id }) {
               <tbody>
                 {data?.experienceDetails?.map((items, index) => (
                   <tr key={items?._id}>
-                    <th className="border border-black w-[50px] ">{index}</th>
+                    <th className="border border-black w-[50px] ">
+                      {index + 1}
+                    </th>
                     <th className="border border-black w-[300px]  py-2">
                       {items?.companyName}
                     </th>

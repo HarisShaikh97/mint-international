@@ -12,10 +12,11 @@ export default function CandidateForm() {
   const id = param.id;
   const router = useRouter();
   const [data, setData] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
     axios
-      .get(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/get/${id}`)
+      .get(`${API_URL}/employee/get/${id}`)
       .then((res) => {
         setData(res?.data?.data);
         console.log(res);

@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function AddCandidate() {
   const router = useRouter();
+  const [role, setRole] = useState("");
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  useEffect(() => {
+    const role = Cookies.get("role");
+    setRole(role);
+  }, []);
 
   const [formData, setFormData] = useState({
     postAppliedFor: "",
@@ -118,6 +125,9 @@ export default function AddCandidate() {
           .post(`${API_URL}/applicant/add`, data)
           .then((response) => {
             toast.success(response.message || "Candidate Added");
+            if (role == "receptionist") {
+              router.push("/dashboard/receptionist");
+            }
             router.push("/admin/dashboard/candidates");
           })
           .catch((err) => {
@@ -342,6 +352,7 @@ export default function AddCandidate() {
             />
           </div>
         </div>
+
         <div className="w-full flex flex-col gap-2">
           <p className="font-semibold">Place of Issue</p>
           <input

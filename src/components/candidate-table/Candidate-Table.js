@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 import axios from "axios";
 
 export default function CandidateTable() {
@@ -34,7 +35,9 @@ export default function CandidateTable() {
     phone1: "",
     dateOfBirth: "",
     referredBy: "",
+    status: "",
   });
+  const role = Cookies.get("role");
 
   useEffect(() => {
     const FetchData = () => {
@@ -50,7 +53,6 @@ export default function CandidateTable() {
     };
     FetchData();
   }, []);
-  console.log(Data);
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
@@ -117,6 +119,7 @@ export default function CandidateTable() {
       [name]: value,
     });
   };
+
   const handleEdit = async (id) => {
     if (id) {
       axios
@@ -125,6 +128,8 @@ export default function CandidateTable() {
           toast.success(
             response.data.message || "Candidate Updated SuccessFully"
           );
+          window.location.reload(false);
+
           setItems({
             fullName: "",
             fatherName: "",
@@ -132,9 +137,8 @@ export default function CandidateTable() {
             phone1: "",
             dateOfBirth: "",
             referredBy: "",
+            status: "",
           });
-
-          window.location.reload(false);
         })
         .catch((err) => {
           toast.error(err.message || "An Error Occurred ");
@@ -169,19 +173,22 @@ export default function CandidateTable() {
         </button>
       </div>
       <div className="h-[80%] w-full flex flex-col gap-8">
-        <div className="grid grid-cols-7 text-sm text-primary font-semibold">
+        <div className="grid grid-cols-8 text-sm text-primary font-semibold">
           <p>Full Name</p>
           <p>Father{"'"}s Name</p>
           <p>Post Applied For</p>
           <p>Phone no.</p>
           <p>DOB</p>
           <p>Referred By</p>
-          <p className="w-full text-center">Action</p>
+          <p>Status</p>
+          {role == "receptionist" ? null : (
+            <p className="w-full text-center">Action</p>
+          )}
         </div>
         <div className="flex-1 flex flex-col gap-7 overflow-y-auto scrollbar-none">
           {paginated_data[pageNumber]?.map((item, key) => {
             return (
-              <div className="grid grid-cols-7 text-xs" key={key}>
+              <div className="grid grid-cols-8 text-xs" key={key}>
                 <p className="truncate pr-5">
                   {editId == key ? (
                     <input
@@ -260,45 +267,62 @@ export default function CandidateTable() {
                     item?.referredBy
                   )}
                 </p>
-                <div className="w-full flex flex-row items-center justify-center gap-5">
-                  <button
-                    onClick={() => {
-                      if (editId === key) {
-                        setEditId(null);
-                      } else {
-                        setEditId(key);
-                      }
-                    }}
-                  >
-                    {editId === key ? (
-                      <button
-                        className="text-primary font-bold"
-                        onClick={() => {
-                          handleEdit(item._id);
-                        }}
-                      >
-                        Save
-                      </button>
-                    ) : (
-                      <PencilSquareIcon className="size-5 text-primary" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleDelete(item._id);
-                    }}
-                  >
-                    <TrashIcon className="size-5 text-primary" />
-                  </button>
-                  <button>
-                    <EyeIcon
-                      className="size-5 text-primary"
-                      onClick={() => {
-                        router.push(`/admin/dashboard/candidates/${item._id}`);
-                      }}
+                <p className="truncate pr-5">
+                  {editId == key ? (
+                    <input
+                      type="text"
+                      value={items.status}
+                      name="status"
+                      onChange={handleInputChange}
+                      className="border-[2px] border-primary"
                     />
-                  </button>
-                </div>
+                  ) : (
+                    item?.status
+                  )}
+                </p>
+                {role == "receptionist" ? null : (
+                  <div className="w-full flex flex-row items-center justify-center gap-5">
+                    <button
+                      onClick={() => {
+                        if (editId === key) {
+                          setEditId(null);
+                        } else {
+                          setEditId(key);
+                        }
+                      }}
+                    >
+                      {editId === key ? (
+                        <button
+                          className="text-primary font-bold"
+                          onClick={() => {
+                            handleEdit(item._id);
+                          }}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <PencilSquareIcon className="size-5 text-primary" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDelete(item._id);
+                      }}
+                    >
+                      <TrashIcon className="size-5 text-primary" />
+                    </button>
+                    <button>
+                      <EyeIcon
+                        className="size-5 text-primary"
+                        onClick={() => {
+                          router.push(
+                            `/admin/dashboard/candidates/${item._id}`
+                          );
+                        }}
+                      />
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}

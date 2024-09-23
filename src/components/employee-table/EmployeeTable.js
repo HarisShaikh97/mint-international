@@ -19,12 +19,10 @@ import toast from "react-hot-toast";
 
 export default function EmployeeTable() {
   const router = useRouter();
-
   const [pageNumber, setPageNumber] = useState(0);
   const [paginationStart, setPaginationStart] = useState(0);
   const [paginationEnd, setPaginationEnd] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [Data, setData] = useState([]);
@@ -36,10 +34,11 @@ export default function EmployeeTable() {
     role: "",
     password: "",
   });
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
     axios
-      .get(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/get`)
+      .get(`${API_URL}/employee/get`)
       .then((res) => {
         setData(res?.data?.data);
       })
@@ -86,6 +85,14 @@ export default function EmployeeTable() {
     }
   }, [pageNumber, paginated_data?.length, search_data]);
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setItems({
+      ...items,
+      [name]: value,
+    });
+  };
+
   const handleDelete = async (id) => {
     if (id) {
       const confirmDelete = window.confirm(
@@ -94,7 +101,7 @@ export default function EmployeeTable() {
       if (confirmDelete) {
         try {
           const response = await axios.delete(
-            `https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/delete/${id}`
+            `${API_URL}/employee/delete/${id}`
           );
           toast.success(response.data.message || "User Deleted Successfully");
           window.location.reload(false);
@@ -104,6 +111,31 @@ export default function EmployeeTable() {
       }
     } else {
       toast.error("Error Occurred. Try Again");
+    }
+  };
+
+  const handleEdit = async (id) => {
+    if (id) {
+      axios
+        .put(` ${API_URL}/employee/update/${id}`, items)
+        .then((response) => {
+          toast.success(
+            response.data.message || "Employee Updated SuccessFully"
+          );
+          window.location.reload(false);
+
+          setItems({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone1: "",
+            role: "",
+            password: "",
+          });
+        })
+        .catch((err) => {
+          toast.error(err.message || "An Error Occurred ");
+        });
     }
   };
 
@@ -153,6 +185,9 @@ export default function EmployeeTable() {
                     <input
                       type="text"
                       className="border-[2px] border-primary"
+                      value={items.firstName}
+                      name="firstName"
+                      onChange={handleInputChange}
                     />
                   ) : (
                     item?.firstName
@@ -162,6 +197,9 @@ export default function EmployeeTable() {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.lastName}
+                      name="lastName"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -172,6 +210,9 @@ export default function EmployeeTable() {
                   {editId == key ? (
                     <input
                       type="text"
+                      value={items.email}
+                      name="email"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
                     />
                   ) : (
@@ -183,6 +224,9 @@ export default function EmployeeTable() {
                     <input
                       type="number"
                       className="border-[2px] border-primary"
+                      value={items.phone1}
+                      name="phone1"
+                      onChange={handleInputChange}
                     />
                   ) : (
                     item?.phone
@@ -190,10 +234,18 @@ export default function EmployeeTable() {
                 </p>
                 <p className="truncate pr-5">
                   {editId == key ? (
-                    <input
+                    <select
                       type="text"
+                      value={items.role}
+                      name="role"
+                      onChange={handleInputChange}
                       className="border-[2px] border-primary"
-                    />
+                    >
+                      <option>Select A Role</option>
+                      <option value={"processAgent"}>Process Agent</option>
+                      <option value={"accountant"}>Accountant</option>
+                      <option value={"receptionist"}>Receptionist</option>
+                    </select>
                   ) : (
                     item?.role
                   )}
@@ -203,6 +255,9 @@ export default function EmployeeTable() {
                     <input
                       type="password"
                       className="border-[2px] border-primary"
+                      value={items.password}
+                      name="password"
+                      onChange={handleInputChange}
                     />
                   ) : (
                     item?.password
@@ -219,7 +274,14 @@ export default function EmployeeTable() {
                     }}
                   >
                     {editId === key ? (
-                      "Save"
+                      <button
+                        className="text-primary font-bold"
+                        onClick={() => {
+                          handleEdit(item._id);
+                        }}
+                      >
+                        Save
+                      </button>
                     ) : (
                       <PencilSquareIcon className="size-5 text-primary" />
                     )}

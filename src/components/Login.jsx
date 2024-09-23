@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FallingLines } from "react-loader-spinner";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +20,7 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .post(`https://5rrdzg3k-8000.inc1.devtunnels.ms/employee/login`, {
+      .post(`${API_URL}/employee/login`, {
         email,
         password,
       })
@@ -36,6 +37,7 @@ export default function Login() {
           router.push("/dashboards/Receptionist");
         }
         setIsLoading(false);
+        Cookies.set("role", response?.data?.data?.role);
       })
       .catch((error) => {
         toast.error(error || "An Error Occurred");
