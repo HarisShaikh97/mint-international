@@ -1,7 +1,21 @@
+"use client";
 import Image from "next/image";
 import { Avatar } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function AccountantLayout({ children }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  // Fetch cookie values client-side
+  useEffect(() => {
+    const f_name = Cookies.get("firstName");
+    const l_name = Cookies.get("lastName");
+
+    if (f_name) setFirstName(f_name);
+    if (l_name) setLastName(l_name);
+  }, []);
+
   return (
     <section>
       <div className="h-24 w-full border-b-2 border-secondary flex items-center justify-between px-2 md:px-10">
@@ -17,9 +31,10 @@ export default function AccountantLayout({ children }) {
           Accountant Dashboard
         </h1>
         <div className="flex items-center gap-2 lg:gap-4">
-          <p className="text-bold text-sm lg:text-xl font-bold text-primary">
-            Remy Sharp
-          </p>
+          <div className="text-bold flex gap-2 text-sm lg:text-xl font-bold text-primary">
+            <p>{firstName}</p>
+            <p>{lastName}</p>
+          </div>
           <Avatar alt="Remy Sharp" src="\images\avatar.jfif" />
         </div>
       </div>

@@ -103,10 +103,10 @@ export default function EmployeeTable() {
           const response = await axios.delete(
             `${API_URL}/employee/delete/${id}`
           );
-          toast.success(response.data.message || "User Deleted Successfully");
+          toast.success(response?.data?.message || "User Deleted Successfully");
           window.location.reload(false);
         } catch (err) {
-          toast.error(err.message || "An Error Occurred");
+          toast.error(err?.message || "An Error Occurred");
         }
       }
     } else {
@@ -120,7 +120,7 @@ export default function EmployeeTable() {
         .put(` ${API_URL}/employee/update/${id}`, items)
         .then((response) => {
           toast.success(
-            response.data.message || "Employee Updated SuccessFully"
+            response?.data?.message || "Employee Updated SuccessFully"
           );
           window.location.reload(false);
 

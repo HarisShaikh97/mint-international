@@ -31,16 +31,18 @@ export default function Login() {
           router.push("/dashboards/Accountant");
         }
         if (response?.data?.data?.role == "processAgent") {
-          router.push("/dashboards/Manager");
+          router.push("/dashboards/ProcessAgent");
         }
         if (response?.data?.data?.role == "receptionist") {
           router.push("/dashboards/Receptionist");
         }
         setIsLoading(false);
         Cookies.set("role", response?.data?.data?.role);
+        Cookies.set("firstName", response?.data?.data?.firstName);
+        Cookies.set("lastName", response?.data?.data?.lastName);
       })
       .catch((error) => {
-        toast.error(error || "An Error Occurred");
+        toast.error(error?.message || "An Error Occurred");
       });
   };
 

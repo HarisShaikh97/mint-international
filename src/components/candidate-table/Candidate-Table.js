@@ -21,6 +21,7 @@ import axios from "axios";
 export default function CandidateTable() {
   const router = useRouter();
   const [Data, setData] = useState();
+  const [role, setRole] = useState("");
   const [editId, setEditId] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [paginationStart, setPaginationStart] = useState(0);
@@ -37,7 +38,11 @@ export default function CandidateTable() {
     referredBy: "",
     status: "",
   });
-  const role = Cookies.get("role");
+
+  useEffect(() => {
+    const role = Cookies.get("role");
+    setRole(role);
+  }, []);
 
   useEffect(() => {
     const FetchData = () => {
@@ -101,10 +106,10 @@ export default function CandidateTable() {
           const response = await axios.delete(
             `${API_URL}/applicant/delete/${id}`
           );
-          toast.success(response.data.message || "User Deleted Successfully");
+          toast.success(response?.data?.message || "User Deleted Successfully");
           window.location.reload(false);
         } catch (err) {
-          toast.error(err.message || "An Error Occurred");
+          toast.error(err?.message || "An Error Occurred");
         }
       }
     } else {
@@ -122,11 +127,15 @@ export default function CandidateTable() {
 
   const handleEdit = async (id) => {
     if (id) {
+      const payload =
+        role === "processAgent"
+          ? { status: items.status } // Only update status for processAgent
+          : { ...items }; // Update all fields for other roles
       axios
-        .put(` ${API_URL}/applicant/update/${id}`, items)
+        .put(` ${API_URL}/applicant/update/${id}`, payload)
         .then((response) => {
           toast.success(
-            response.data.message || "Candidate Updated SuccessFully"
+            response?.data?.message || "Candidate Updated SuccessFully"
           );
           window.location.reload(false);
 
@@ -141,13 +150,13 @@ export default function CandidateTable() {
           });
         })
         .catch((err) => {
-          toast.error(err.message || "An Error Occurred ");
+          toast.error(err?.message || "An Error Occurred ");
         });
     }
   };
 
   return (
-    <div className="flex-1 w-full gap-32  border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
+    <div className="flex-1 w-full gap-32  border border-gray-400 rounded-xl p-5  flex flex-col justify-between">
       <div className="w-full flex flex-row items-center justify-between">
         <div className="h-10 w-60 border border-primary border-opacity-35 rounded-lg flex flex-row items-center gap-2 px-2">
           <MagnifyingGlassIcon className="h-6 w-6 text-primary" />
@@ -162,18 +171,25 @@ export default function CandidateTable() {
             className="w-full outline-none"
           />
         </div>
-        <button
-          className="h-12 bg-primary rounded-lg flex flex-row items-center gap-2 px-3"
-          onClick={() => {
-            router.push("/admin/dashboard/candidates/add");
-          }}
-        >
-          <PlusCircleIcon className="size-7 text-white" />
-          <p className="text-white text-sm font-light">Add New Candidate</p>
-        </button>
+
+        {role == "processAgent" ? null : (
+          <button
+            className="h-12 bg-primary rounded-lg flex flex-row items-center gap-2 px-3"
+            onClick={() => {
+              router.push("/admin/dashboard/candidates/add");
+            }}
+          >
+            <PlusCircleIcon className="size-7 text-white" />
+            <p className="text-white text-sm font-light">Add New Candidate</p>
+          </button>
+        )}
       </div>
       <div className="h-[80%] w-full flex flex-col gap-8">
-        <div className="grid grid-cols-8 text-sm text-primary font-semibold">
+        <div
+          className={`grid ${
+            role == "receptionist" ? "grid-cols-7" : "grid-cols-8"
+          }  text-sm text-primary font-semibold`}
+        >
           <p>Full Name</p>
           <p>Father{"'"}s Name</p>
           <p>Post Applied For</p>
@@ -188,9 +204,14 @@ export default function CandidateTable() {
         <div className="flex-1 flex flex-col gap-7 overflow-y-auto scrollbar-none">
           {paginated_data[pageNumber]?.map((item, key) => {
             return (
-              <div className="grid grid-cols-8 text-xs" key={key}>
+              <div
+                className={`grid ${
+                  role == "receptionist" ? "grid-cols-7" : "grid-cols-8"
+                } text-xs`}
+                key={key}
+              >
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="text"
                       value={items.fullName}
@@ -203,7 +224,7 @@ export default function CandidateTable() {
                   )}
                 </p>{" "}
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="text"
                       value={items.fatherName}
@@ -216,7 +237,7 @@ export default function CandidateTable() {
                   )}
                 </p>
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="text"
                       value={items.postAppliedFor}
@@ -229,7 +250,7 @@ export default function CandidateTable() {
                   )}
                 </p>
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="number"
                       value={items.phone1}
@@ -242,7 +263,7 @@ export default function CandidateTable() {
                   )}
                 </p>
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="date"
                       value={items.dateOfBirth}
@@ -255,7 +276,7 @@ export default function CandidateTable() {
                   )}
                 </p>
                 <p className="truncate pr-5">
-                  {editId == key ? (
+                  {editId == key && role != "processAgent" ? (
                     <input
                       type="text"
                       value={items.referredBy}
@@ -281,47 +302,47 @@ export default function CandidateTable() {
                   )}
                 </p>
                 {role == "receptionist" ? null : (
-                  <div className="w-full flex flex-row items-center justify-center gap-5">
-                    <button
-                      onClick={() => {
-                        if (editId === key) {
-                          setEditId(null);
-                        } else {
-                          setEditId(key);
-                        }
-                      }}
-                    >
-                      {editId === key ? (
-                        <button
-                          className="text-primary font-bold"
-                          onClick={() => {
-                            handleEdit(item._id);
-                          }}
-                        >
-                          Save
-                        </button>
-                      ) : (
-                        <PencilSquareIcon className="size-5 text-primary" />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleDelete(item._id);
-                      }}
-                    >
-                      <TrashIcon className="size-5 text-primary" />
-                    </button>
-                    <button>
-                      <EyeIcon
-                        className="size-5 text-primary"
+                  <>
+                    <div className="w-full flex flex-row items-center justify-center gap-5">
+                      <button
                         onClick={() => {
-                          router.push(
-                            `/admin/dashboard/candidates/${item._id}`
-                          );
+                          if (editId === key) {
+                            handleEdit(item._id);
+                            setEditId(null); // Reset editId after saving
+                          } else {
+                            setEditId(key);
+                          }
                         }}
-                      />
-                    </button>
-                  </div>
+                        className={
+                          editId === key ? "text-primary font-bold" : ""
+                        }
+                      >
+                        {editId === key ? (
+                          "Save"
+                        ) : (
+                          <PencilSquareIcon className="size-5 text-primary" />
+                        )}
+                      </button>
+
+                      {role !== "processAgent" && (
+                        <button onClick={() => handleDelete(item._id)}>
+                          <TrashIcon className="size-5 text-primary" />
+                        </button>
+                      )}
+
+                      {role !== "processAgent" && (
+                        <button
+                          onClick={() =>
+                            router.push(
+                              `/admin/dashboard/candidates/${item._id}`
+                            )
+                          }
+                        >
+                          <EyeIcon className="size-5 text-primary" />
+                        </button>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
             );

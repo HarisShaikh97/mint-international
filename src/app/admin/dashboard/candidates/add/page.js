@@ -124,14 +124,16 @@ export default function AddCandidate() {
         axios
           .post(`${API_URL}/applicant/add`, data)
           .then((response) => {
-            toast.success(response.message || "Candidate Added");
+            toast.success(response?.message || "Candidate Added");
+            console.log(role);
             if (role == "receptionist") {
-              router.push("/dashboard/receptionist");
+              router.replace("/dashboards/Receptionist");
+            } else {
+              router.push("/admin/dashboard/candidates");
             }
-            router.push("/admin/dashboard/candidates");
           })
           .catch((err) => {
-            toast.error(err.message || "An Error Occurred ");
+            toast.error(err?.message || "An Error Occurred ");
           });
       }
     }
