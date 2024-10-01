@@ -37,6 +37,7 @@ export default function AccountantLayout({ children }) {
           </div>
           <Avatar alt="Remy Sharp" src="\images\avatar.jfif" />
         </div>
+        <button></button>
       </div>
       {children}
     </section>
