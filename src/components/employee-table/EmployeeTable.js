@@ -22,7 +22,7 @@ export default function EmployeeTable() {
   const [pageNumber, setPageNumber] = useState(0);
   const [paginationStart, setPaginationStart] = useState(0);
   const [paginationEnd, setPaginationEnd] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
   const [editId, setEditId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [Data, setData] = useState([]);
@@ -140,8 +140,8 @@ export default function EmployeeTable() {
   };
 
   return (
-    <div className="flex-1  w-full border border-gray-400 rounded-xl p-5 flex flex-col justify-between">
-      <div className="w-full flex flex-row items-center justify-between">
+    <div className="flex-1  w-full  h-max p-5 flex flex-col justify-start gap-10">
+      <div className="w-full  flex flex-row items-center justify-between">
         <div className="h-10 w-60 border border-primary border-opacity-35 rounded-lg flex flex-row items-center gap-2 px-2">
           <MagnifyingGlassIcon className="h-6 w-6 text-primary" />
           <input
@@ -156,7 +156,7 @@ export default function EmployeeTable() {
           />
         </div>
         <button
-          className="h-12 bg-primary rounded-lg flex flex-row items-center gap-2 px-3"
+          className="h-12 bg-button2 rounded-lg flex flex-row items-center gap-2 px-3"
           onClick={() => {
             router.push("/admin/dashboard/employees/add");
           }}
@@ -165,8 +165,8 @@ export default function EmployeeTable() {
           <p className="text-white text-sm font-light">Add New Employee</p>
         </button>
       </div>
-      <div className="h-[80%] w-full flex flex-col gap-8">
-        <div className="grid grid-cols-7 text-sm text-primary font-semibold">
+      <div className="h-max w-full flex flex-col gap-8  rounded-br-xl rounded-bl-xl shadow-lg ">
+        <div className="grid h-10 grid-cols-7 text-lg border-b-[1px] border-black/20 items-center  pl-2  bg-[#E4E7EC] bg-opacity-[20%] font-semibold">
           <p>First Name</p>
           <p>Last Name</p>
           <p>Email</p>
@@ -179,7 +179,10 @@ export default function EmployeeTable() {
         <div className="flex-1 flex flex-col gap-7 overflow-y-auto scrollbar-none">
           {paginated_data[pageNumber]?.map((item, key) => {
             return (
-              <div className="grid grid-cols-7 text-xs" key={key}>
+              <div
+                className="grid grid-cols-7 text-sm border-b-[1px] pl-2 border-black/20 h-10  text-[#475467]"
+                key={key}
+              >
                 <p className="truncate pr-5">
                   {editId == key ? (
                     <input
@@ -275,7 +278,7 @@ export default function EmployeeTable() {
                   >
                     {editId === key ? (
                       <button
-                        className="text-primary font-bold"
+                        className=" font-bold"
                         onClick={() => {
                           handleEdit(item._id);
                         }}
@@ -283,7 +286,7 @@ export default function EmployeeTable() {
                         Save
                       </button>
                     ) : (
-                      <PencilSquareIcon className="size-5 text-primary" />
+                      <PencilSquareIcon className="size-5" />
                     )}
                   </button>
                   <button
@@ -291,11 +294,11 @@ export default function EmployeeTable() {
                       handleDelete(item._id);
                     }}
                   >
-                    <TrashIcon className="size-5 text-primary" />
+                    <TrashIcon className="size-5 " />
                   </button>
                   <button>
                     <EyeIcon
-                      className="size-5 text-primary"
+                      className="size-5 "
                       onClick={() => {
                         router.push(`/admin/dashboard/employees/${item._id}`);
                       }}
@@ -306,101 +309,101 @@ export default function EmployeeTable() {
             );
           })}
         </div>
-      </div>
-      <div className="w-full flex flex-row items-center justify-between">
-        <div className="flex flex-row items-center gap-5">
-          <p className="text-xs">Showing</p>
-          <div className="h-10 w-14 border border-primary border-opacity-35 rounded-lg flex flex-row items-center justify-between px-2">
-            <p className="text-xs text-primary">{itemsPerPage}</p>
-            <div className="flex flex-col items-center justify-center gap-1">
-              <button
-                onClick={() => {
-                  if (itemsPerPage < 10) {
-                    setItemsPerPage(itemsPerPage + 1);
-                  }
-                }}
-              >
-                <ChevronUpIcon
-                  className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
-                    itemsPerPage < 10 ? "opacity-100" : "opacity-35"
-                  }`}
-                />
-              </button>
-              <button
-                onClick={() => {
-                  if (itemsPerPage > 5) {
-                    setItemsPerPage(itemsPerPage - 1);
-                  }
-                }}
-              >
-                <ChevronDownIcon
-                  className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
-                    itemsPerPage > 5 ? "opacity-100" : "opacity-35"
-                  }`}
-                />
-              </button>
+        <div className="w-full flex flex-row items-center justify-between px-2 pb-4">
+          <div className="flex flex-row items-center gap-5">
+            <p className="text-xs">Showing</p>
+            <div className="h-10 w-14 border border-primary border-opacity-35 rounded-lg flex flex-row items-center justify-between px-2">
+              <p className="text-xs text-primary">{itemsPerPage}</p>
+              <div className="flex flex-col items-center justify-center gap-1">
+                <button
+                  onClick={() => {
+                    if (itemsPerPage < 9) {
+                      setItemsPerPage(itemsPerPage + 1);
+                    }
+                  }}
+                >
+                  <ChevronUpIcon
+                    className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
+                      itemsPerPage < 9 ? "opacity-100" : "opacity-35"
+                    }`}
+                  />
+                </button>
+                <button
+                  onClick={() => {
+                    if (itemsPerPage > 1) {
+                      setItemsPerPage(itemsPerPage - 1);
+                    }
+                  }}
+                >
+                  <ChevronDownIcon
+                    className={`size-3 transform-gpu ease-in-out duration-500 text-primary ${
+                      itemsPerPage > 1 ? "opacity-100" : "opacity-35"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <p className="text-xs">
-          Showing{" "}
-          {paginated_data?.length > 0 ? pageNumber * itemsPerPage + 1 : 0} to{" "}
-          {paginated_data?.length > 0
-            ? (pageNumber + 1) * itemsPerPage -
-              (itemsPerPage - paginated_data[pageNumber]?.length)
-            : 0}{" "}
-          out of {Data?.length} records
-        </p>
-        <div className="flex flex-row items-center gap-3">
-          <button
-            onClick={() => {
-              if (pageNumber > 0) {
-                setPageNumber(pageNumber - 1);
-              }
-            }}
-          >
-            <ChevronLeftIcon
-              className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
-                pageNumber > 0 ? "opacity-100" : "opacity-35"
-              }`}
-            />
-          </button>
-          <div className="flex flex-row items-center gap-1">
-            {paginated_data?.map((_, key) => {
-              if (key >= paginationStart && key <= paginationEnd) {
-                return (
-                  <button
-                    key={key}
-                    onClick={() => {
-                      setPageNumber(key);
-                    }}
-                    className={`size-7 transform-gpu ease-in-out duration-500 border rounded-lg ${
-                      pageNumber === key
-                        ? "border-primary text-primary"
-                        : "border-transparent"
-                    } text-xs flex items-center justify-center`}
-                  >
-                    {key + 1}
-                  </button>
-                );
-              }
-            })}
+          <p className="text-xs">
+            Showing{" "}
+            {paginated_data?.length > 0 ? pageNumber * itemsPerPage + 1 : 0} to{" "}
+            {paginated_data?.length > 0
+              ? (pageNumber + 1) * itemsPerPage -
+                (itemsPerPage - paginated_data[pageNumber]?.length)
+              : 0}{" "}
+            out of {Data?.length} records
+          </p>
+          <div className="flex flex-row items-center gap-3">
+            <button
+              onClick={() => {
+                if (pageNumber > 0) {
+                  setPageNumber(pageNumber - 1);
+                }
+              }}
+            >
+              <ChevronLeftIcon
+                className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
+                  pageNumber > 0 ? "opacity-100" : "opacity-35"
+                }`}
+              />
+            </button>
+            <div className="flex flex-row items-center gap-1">
+              {paginated_data?.map((_, key) => {
+                if (key >= paginationStart && key <= paginationEnd) {
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setPageNumber(key);
+                      }}
+                      className={`size-7 transform-gpu ease-in-out duration-500 border rounded-lg ${
+                        pageNumber === key
+                          ? "border-primary text-primary"
+                          : "border-transparent"
+                      } text-xs flex items-center justify-center`}
+                    >
+                      {key + 1}
+                    </button>
+                  );
+                }
+              })}
+            </div>
+            <button
+              onClick={() => {
+                if (pageNumber < paginated_data?.length - 1) {
+                  setPageNumber(pageNumber + 1);
+                }
+              }}
+            >
+              <ChevronRightIcon
+                className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
+                  pageNumber < paginated_data?.length - 1
+                    ? "opacity-100"
+                    : "opacity-35"
+                }`}
+              />
+            </button>
           </div>
-          <button
-            onClick={() => {
-              if (pageNumber < paginated_data?.length - 1) {
-                setPageNumber(pageNumber + 1);
-              }
-            }}
-          >
-            <ChevronRightIcon
-              className={`size-4 transform-gpu ease-in-out duration-500 text-primary ${
-                pageNumber < paginated_data?.length - 1
-                  ? "opacity-100"
-                  : "opacity-35"
-              }`}
-            />
-          </button>
         </div>
       </div>
     </div>

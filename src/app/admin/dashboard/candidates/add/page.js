@@ -154,7 +154,7 @@ export default function AddCandidate() {
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -164,7 +164,7 @@ export default function AddCandidate() {
               onChange={handleInputChange}
               value={formData.fatherName}
               name="fatherName"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -174,7 +174,7 @@ export default function AddCandidate() {
               name="postAppliedFor"
               onChange={handleInputChange}
               value={formData.postAppliedFor}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -184,7 +184,7 @@ export default function AddCandidate() {
               name="referredBy"
               onChange={handleInputChange}
               value={formData.referredBy}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
         </div>
@@ -196,7 +196,7 @@ export default function AddCandidate() {
               value={formData.phone1}
               onChange={handleInputChange}
               name="phone1"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -206,7 +206,7 @@ export default function AddCandidate() {
               value={formData.phone2}
               name="phone2"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -216,7 +216,7 @@ export default function AddCandidate() {
               value={formData.maritalStatus}
               name="maritalStatus"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -226,7 +226,7 @@ export default function AddCandidate() {
               value={formData.religion}
               name="religion"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
         </div>
@@ -238,7 +238,7 @@ export default function AddCandidate() {
               value={formData.academicQualifications}
               name="academicQualifications"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -248,7 +248,7 @@ export default function AddCandidate() {
               value={formData.technicalQualifications}
               onChange={handleInputChange}
               name="technicalQualifications"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           {/* <div className="w-full flex flex-col gap-2">
@@ -258,7 +258,7 @@ export default function AddCandidate() {
               value={formData.languagesKnown}
               onChange={handleInputChange}
               name="languagesKnown"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div> */}
           <div className="w-full flex flex-col gap-2">
@@ -269,7 +269,7 @@ export default function AddCandidate() {
                   type="text"
                   value={language}
                   onChange={(e) => handleLanguageChange(index, e.target.value)}
-                  className="h-10 w-full border border-gray-300 rounded-md px-2"
+                  className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
                 />
                 {index > 0 && (
                   <button
@@ -285,7 +285,7 @@ export default function AddCandidate() {
             <button
               type="button"
               onClick={handleAddLanguage}
-              className="h-10 w-40 bg-primary text-white rounded-lg font-semibold mt-2"
+              className="h-10 w-40 bg-gradient-to-r from-button1 to-button2 text-white rounded-lg font-semibold mt-2"
             >
               Add Language
             </button>
@@ -299,7 +299,7 @@ export default function AddCandidate() {
               value={formData.passportNo}
               onChange={handleInputChange}
               name="passportNo"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -309,7 +309,7 @@ export default function AddCandidate() {
               value={formData.cnic}
               name="cnic"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -319,7 +319,7 @@ export default function AddCandidate() {
               name="dateOfIssue"
               value={formData.dateOfIssue}
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -329,7 +329,7 @@ export default function AddCandidate() {
               value={formData.dateOfBirth}
               name="dateOfBirth"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -339,7 +339,7 @@ export default function AddCandidate() {
               value={formData.dateOfExpiry}
               name="dateOfExpiry"
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
 
@@ -350,7 +350,7 @@ export default function AddCandidate() {
               onChange={handleInputChange}
               value={formData.experienceTotal}
               name="experienceTotal"
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
             />
           </div>
         </div>
@@ -362,7 +362,7 @@ export default function AddCandidate() {
             value={formData.placeOfIssue}
             name="placeOfIssue"
             onChange={handleInputChange}
-            className="h-10 w-full border border-gray-300 rounded-md px-2"
+            className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
           />
         </div>
         <div className="w-full flex flex-col gap-2">
@@ -371,14 +371,14 @@ export default function AddCandidate() {
             type="file"
             onChange={handleFileChange}
             name="profileImage"
-            className="h-10 w-full border border-gray-300 rounded-md px-2"
+            className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
           />
         </div>
         <div className="w-full flex flex-row items-center justify-between my-5">
           <p className="font-semibold text-lg">Experience Details</p>
           <button
             type="button"
-            className="h-10 w-40 items-center justify-center bg-primary rounded-lg text-lg text-white font-semibold"
+            className="h-10 w-40 items-center justify-center bg-gradient-to-r from-button1 to-button2 rounded-lg text-lg text-white font-semibold"
             onClick={handleAddRow}
           >
             Add row
@@ -395,7 +395,7 @@ export default function AddCandidate() {
                 onChange={(e) =>
                   handleExperienceChange(key, "companyName", e.target.value)
                 }
-                className="h-10 w-full border border-gray-300 rounded-md px-2"
+                className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
               />
             </div>
             <div className="w-full flex flex-col gap-2">
@@ -406,7 +406,7 @@ export default function AddCandidate() {
                 onChange={(e) =>
                   handleExperienceChange(key, "duration", e.target.value)
                 }
-                className="h-10 w-full border border-gray-300 rounded-md px-2"
+                className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
               />
             </div>
             <div className="w-full flex flex-col gap-2">
@@ -417,7 +417,7 @@ export default function AddCandidate() {
                 onChange={(e) =>
                   handleExperienceChange(key, "trade", e.target.value)
                 }
-                className="h-10 w-full border border-gray-300 rounded-md px-2"
+                className="h-10 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md px-2"
               />
             </div>
             {key > 0 && (
@@ -435,7 +435,7 @@ export default function AddCandidate() {
         <div className="w-full flex flex-col gap-2">
           <p className="font-semibold">Remarks</p>
           <textarea
-            className="h-40 w-full border border-gray-300 rounded-md p-2"
+            className="h-40 w-full border border-opacity-[20%] border-button1 border-[1.5px]rounded-md p-2"
             name="remarks"
             value={formData.remarks}
             onChange={handleInputChange}
@@ -445,12 +445,12 @@ export default function AddCandidate() {
       <div className="flex flex-row items-center gap-5 self-end">
         <button
           type="submit"
-          className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-primary text-white"
+          className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-gradient-to-r from-button1 to-button2 text-white"
         >
           Save
         </button>
         <button
-          className="h-12 w-40 rounded-lg border-2 border-primary flex items-center justify-center text-lg font-semibold text-primary"
+          className="h-12 w-40 rounded-lg bg-gradient-to-r from-button1 to-button2 flex items-center justify-center text-lg font-semibold text-white"
           onClick={() => {
             router?.back();
           }}

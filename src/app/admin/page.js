@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FallingLines } from "react-loader-spinner";
+import logo from "../../../public/images/m2.png";
 
 export default function Login() {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -38,22 +39,21 @@ export default function Login() {
 
   return (
     <main className="flex-1 h-screen flex flex-col">
-      <div className="h-24 w-full bg-primary bg-opacity-35 flex items-center px-10">
-        <Image
-          src={"/images/mint-international-logo.png"}
-          alt="logo"
-          height={50}
-          width={100}
-        />
-      </div>
-      <div className="flex-1 flex flex-col items-center justify-center gap-10">
-        <p className="text-3xl  text-primary font-extrabold">Login</p>
-        <div className="w-[500px] rounded-lg shadow-2xl border border-primary flex flex-col gap-10 p-7">
+      <div className="flex-1  flex flex-col items-center justify-start mt-10 gap-10">
+        <Image src={logo} width={200} height={200} />
+        <h1 className="text-5xl font-bold text-center ">
+          Sign In To Manage Your <br /> WorkFlow
+        </h1>
+        <p className="text-[#333333] text-xl text-center ">
+          Log in to manage employee details, track candidate <br />
+          applications, and streamline your recruitment
+        </p>
+        <div className="w-[500px] flex flex-col gap-20 p-7">
           <div className="flex flex-col gap-3">
-            <p className="text-lg font-semibold text-primary">Email:</p>
+            <p className="text-lg font-semibold ">Email:</p>
             <input
               type="email"
-              className="h-10 w-full bg-secondary bg-opacity-10 border-b border-primary outline-none px-3"
+              className="h-10 w-full  outline-none px-3"
               placeholder="example@example.com"
               value={email}
               onChange={(e) => {
@@ -62,10 +62,10 @@ export default function Login() {
             />
           </div>
           <div className="flex flex-col gap-3">
-            <p className="text-lg font-semibold text-primary">Password:</p>
+            <p className="text-lg font-semibold">Password:</p>
             <input
               type="password"
-              className="h-10 w-full bg-secondary bg-opacity-10 border-b border-primary outline-none px-3"
+              className="h-10 w-full  outline-none px-3"
               placeholder="*********"
               value={password}
               onChange={(e) => {
@@ -74,7 +74,7 @@ export default function Login() {
             />
           </div>
           <button
-            className="h-12 w-40 rounded bg-secondary flex self-center items-center justify-center text-lg text-white font-semibold"
+            className="h-12 w-40 rounded    bg-gradient-to-r from-button1 to-button2 flex self-center items-center justify-center text-lg text-white font-semibold"
             onClick={handleSubmit}
           >
             {isLoading ? (

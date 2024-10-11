@@ -54,7 +54,7 @@ export default function AddEmployee() {
               name="firstName"
               onChange={handleInputChange}
               value={items.firstName}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -64,7 +64,7 @@ export default function AddEmployee() {
               name="lastName"
               value={items.lastName}
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -74,7 +74,7 @@ export default function AddEmployee() {
               name="email"
               value={items.email}
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function AddEmployee() {
               name="phone"
               value={items.phone}
               onChange={handleInputChange}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -96,7 +96,7 @@ export default function AddEmployee() {
               name="role"
               onChange={handleInputChange}
               value={items.role}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             >
               <option value={""}>Select Designation</option>
               <option value={"receptionist"}>Receptionist</option>
@@ -111,17 +111,17 @@ export default function AddEmployee() {
               name="password"
               onChange={handleInputChange}
               value={items.password}
-              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              className="h-10 w-full  border-opacity-[20%] border-button1 border-[1.5px] rounded-md px-2"
             />
           </div>
         </div>
       </div>
       <div className="flex flex-row items-center gap-5 self-end">
-        <button className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-primary text-white">
+        <button className="h-12 w-40 rounded-lg flex items-center justify-center text-lg font-semibold bg-gradient-to-r from-button1 to-button2 text-white">
           Save
         </button>
         <button
-          className="h-12 w-40 rounded-lg border-2 border-primary flex items-center justify-center text-lg font-semibold text-primary"
+          className="h-12 w-40 rounded-lg bg-gradient-to-r from-button1 to-button2 flex items-center justify-center text-lg font-semibold text-white"
           onClick={() => {
             router?.back();
           }}

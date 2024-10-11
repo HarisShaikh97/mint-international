@@ -46,7 +46,7 @@ export default function Form({ id }) {
   const profileImage = data?.profileImage;
   const modifiedImage = profileImage?.replace("public/", "");
   const encodedUrl = modifiedImage?.replace(/ /g, "%20");
-  const image = `https://7fnjh4kc-8000.euw.devtunnels.ms/${encodedUrl}`;
+  const image = `http://localhost:8000/${encodedUrl}`;
   console.log(image);
 
   return (
