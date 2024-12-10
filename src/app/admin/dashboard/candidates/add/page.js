@@ -450,6 +450,7 @@ export default function AddCandidate() {
           Save
         </button>
         <button
+          type="button"
           className="h-12 w-40 rounded-lg bg-gradient-to-r from-button1 to-button2 flex items-center justify-center text-lg font-semibold text-white"
           onClick={() => {
             router?.back();
