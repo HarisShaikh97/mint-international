@@ -24,7 +24,7 @@ export default function CandidateForm() {
       .catch((err) => {
         toast.error(err.message || "An Error Occurred While Fetching Details");
       });
-  }, [id]);
+  }, [id, API_URL]);
 
   return (
     <>

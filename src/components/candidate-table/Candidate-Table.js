@@ -57,7 +57,7 @@ export default function CandidateTable() {
         });
     };
     FetchData();
-  }, []);
+  }, [API_URL]);
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
@@ -186,7 +186,7 @@ export default function CandidateTable() {
       <div className="h-max w-full flex flex-col gap-8  rounded-br-xl rounded-bl-xl shadow-lg ">
         <div className="grid h-10 grid-cols-8 text-lg border-b-[1px] border-black/20 items-center  pl-2  bg-[#E4E7EC] bg-opacity-[20%] font-semibold">
           <p>Full Name</p>
-          <p>Father's Name</p>
+          <p>Fathers Name</p>
           <p>Post Applied For</p>
           <p>Phone no.</p>
           <p>DOB</p>

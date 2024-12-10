@@ -40,7 +40,7 @@ export default function Login() {
   return (
     <main className="flex-1 h-screen flex flex-col">
       <div className="flex-1  flex flex-col items-center justify-start mt-10 gap-10">
-        <Image src={logo} width={200} height={200} />
+        <Image src={logo} width={200} height={200} alt="logo.png" />
         <h1 className="text-5xl font-bold text-center ">
           Sign In To Manage Your <br /> WorkFlow
         </h1>

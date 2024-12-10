@@ -41,7 +41,7 @@ export default function Form({ id }) {
       .catch((err) => {
         toast.error(err?.message || "Candidate Data Not Found");
       });
-  }, []);
+  }, [id, API_URL]);
 
   const profileImage = data?.profileImage;
   const modifiedImage = profileImage?.replace("public/", "");

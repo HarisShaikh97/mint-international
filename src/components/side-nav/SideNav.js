@@ -128,7 +128,7 @@ export default function SideNav() {
           </p>
         </button>
       </div>
-      <Image src={logo} width={200} height={400} />
+      <Image src={logo} width={200} height={400} alt="logo.png" />
     </div>
   );
 }

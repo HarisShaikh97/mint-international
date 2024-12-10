@@ -45,7 +45,7 @@ export default function EmployeeTable() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [API_URL]);
 
   const chunkArray = (array, chunkSize) => {
     const result = [];
